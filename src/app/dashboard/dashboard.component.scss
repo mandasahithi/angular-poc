@@ -1,0 +1,196 @@
+/* Pastel page background and dialog form styling */
+:host {
+  display: block;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: linear-gradient(180deg, #f6f9ff 0%, #fef6ff 50%, #fbfff4 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* center main container and give breathing room */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* dialog backdrop when form is open */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: linear-gradient(180deg, rgba(242,246,255,0.75), rgba(255,248,255,0.6));
+  backdrop-filter: blur(6px) saturate(120%);
+  z-index: 60;
+}
+
+/* dialog card style for the form */
+.card.dialog {
+  width: 100%;
+  max-width: 840px;
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 18px 50px rgba(43, 62, 80, 0.12);
+  border: 1px solid rgba(255,255,255,0.6);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,255,0.95));
+  transform: translateY(-6px);
+  transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
+}
+
+/* stronger inner padding for card body */
+.card.dialog .card-body {
+  padding: 1.5rem;
+}
+
+/* soften standard cards with pastel accents */
+.card {
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  box-shadow: 0 8px 22px rgba(33, 47, 60, 0.06);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(35, 47, 63, 0.12);
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+/* Card content */
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.card-subtitle {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Form */
+.card .form-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  border-radius: 10px;
+  border: 1px solid rgba(220,225,235,0.9);
+  background: #fff;
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 120ms ease;
+  padding: .5rem .75rem;
+}
+
+.form-control:focus {
+  border-color: rgba(111, 145, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(111,145,255,0.08);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.form-check-input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+}
+
+.form-check-label {
+  margin-left: 0.35rem;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-weight: 600;
+}
+
+.btn-primary, .btn.btn-primary {
+  background: linear-gradient(90deg, #7c9fff 0%, #a8b4ff 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(124,159,255,0.14);
+}
+
+.btn-success {
+  background: linear-gradient(90deg, #8fe6c6 0%, #bff3dd 100%);
+  color: #034d2c;
+  border: none;
+}
+
+.btn-outline-primary {
+  border: 1px solid rgba(124,159,255,0.22);
+  color: #3b4f9b;
+  background: transparent;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.6rem;
+}
+
+/* Validation messages */
+.text-danger.small {
+  line-height: 1;
+}
+
+/* Empty state */
+.alert-info {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #f4fbff, #f7f8ff);
+  border: 1px solid rgba(220,235,255,0.9);
+  color: #0b5ed7;
+  padding: 1rem;
+}
+
+/* Grid/card sizing tweaks */
+.row.g-3 {
+  margin-top: 0.2rem;
+}
+
+.card.h-100 {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure action buttons align */
+.card .mt-auto.d-flex {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Responsive tweaks */
+@media (max-width: 575.98px) {
+  .card.h-100 {
+    min-height: auto;
+  }
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+/* Small utility */
+.small-muted {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+/* responsive dialog sizing */
+@media (max-width: 767.98px) {
+  .card.dialog {
+    max-width: 720px;
+  }
+  .dialog-backdrop {
+    padding: 0.75rem;
+  }
+}
