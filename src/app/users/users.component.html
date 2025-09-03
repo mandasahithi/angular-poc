@@ -106,35 +106,62 @@
           </div>
         </div>
         <div class="col-md-6">
-          <button class="btn btn-outline-secondary filter-btn">
-            <i class="fas fa-filter"></i> Filter
-          </button>
+            <div class="filter-wrapper" style="position: relative; display: inline-block;">
+              <button class="btn btn-outline-secondary filter-btn" (click)="toggleFilterPopover($event)">
+                <i class="fas fa-filter"></i> Filter
+              </button>
+
+              <!-- Popover -->
+              <div class="filter-popover" *ngIf="showFilterPopover" (click)="$event.stopPropagation()">
+                <div class="popover-header">
+                  <strong>Filter</strong>
+                  <button class="btn btn-link btn-sm clear-link" (click)="clearFilterSelections()">Clear Filter</button>
+                </div>
+
+                <div class="popover-body">
+                  <div class="filter-option" (click)="tempSelectedStatus = (tempSelectedStatus === 'Active' ? '' : 'Active')">
+                    <span>Active</span>
+                    <span class="checkmark" *ngIf="tempSelectedStatus === 'Active'">✔</span>
+                  </div>
+
+                  <div class="filter-option" (click)="tempSelectedStatus = (tempSelectedStatus === 'Inactive' ? '' : 'Inactive')">
+                    <span>Inactive</span>
+                    <span class="checkmark" *ngIf="tempSelectedStatus === 'Inactive'">✔</span>
+                  </div>
+                </div>
+
+                <div class="popover-actions d-flex justify-content-end gap-2">
+                  <button class="btn btn-secondary" (click)="cancelFilter()">Cancel</button>
+                  <button class="btn btn-primary" (click)="applyFilterFromPopover()">Apply</button>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
 
       <!-- Tabs -->
       <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
-          <a class="nav-link active" href="#" (click)="setActiveTab('citizens')">Citizens</a>
+          <a class="nav-link" href="#" [class.active]="activeTab === 'citizens'" (click)="setActiveTab('citizens')">Citizens</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="setActiveTab('verifier')">Verifier</a>
+          <a class="nav-link" href="#" [class.active]="activeTab === 'verifier'" (click)="setActiveTab('verifier')">Verifier</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="setActiveTab('coordinators')">Coordinators</a>
+          <a class="nav-link" href="#" [class.active]="activeTab === 'coordinators'" (click)="setActiveTab('coordinators')">Coordinators</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="setActiveTab('admins')">Admins</a>
+          <a class="nav-link" href="#" [class.active]="activeTab === 'admins'" (click)="setActiveTab('admins')">Admins</a>
         </li>
       </ul>
 
       <!-- Citizens Section -->
-      <div class="section-header d-flex justify-content-between align-items-center mb-4">
+  <div class="section-header d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 class="section-title">Registered Citizens</h2>
           <p class="section-subtitle">Manage citizen accounts and information</p>
         </div>
-        <button class="btn btn-primary add-user-btn">
+  <button class="btn btn-primary add-user-btn" (click)="addUser()">
           <i class="fas fa-plus"></i> Add Users
         </button>
       </div>
@@ -170,11 +197,52 @@
               </div>
             </div>
 
-            <div class="user-actions">
-              <button class="btn btn-primary btn-block edit-btn" (click)="editUser(user)">
-                Edit
-              </button>
+            <!-- Card actions -->
+            <div class="user-actions d-flex gap-2">
+              <button class="btn btn-primary btn-block edit-btn" (click)="editUser(user)">Edit</button>
+              <button class="btn btn-outline-danger" (click)="deleteUser(user.id)">Delete</button>
             </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal dialog for add/edit -->
+      <div *ngIf="showForm" class="dialog-backdrop">
+        <div class="card dialog">
+          <div class="card-body">
+            <h5 class="card-title">{{ isEditMode ? 'Edit User' : 'Add User' }}</h5>
+            <form (ngSubmit)="saveEditedUser()">
+              <div class="row g-2">
+                <div class="col-12 col-md-6">
+                  <input class="form-control" [(ngModel)]="editedUser.name" name="name" placeholder="Full name" required />
+                </div>
+                <div class="col-12 col-md-6">
+                  <input class="form-control" [(ngModel)]="editedUser.email" name="email" placeholder="Email" />
+                </div>
+                <div class="col-12 col-md-6">
+                  <input class="form-control" [(ngModel)]="editedUser.phone" name="phone" placeholder="Phone" />
+                </div>
+                <div class="col-12 col-md-6">
+                  <input class="form-control" [(ngModel)]="editedUser.location" name="location" placeholder="Location" />
+                </div>
+                <div class="col-6 col-md-3">
+                  <select class="form-control" [(ngModel)]="editedUser.status" name="status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div class="col-6 col-md-3">
+                  <select class="form-control" [(ngModel)]="editedUser.role" name="role">
+                    <option value="MS">MS</option>
+                    <option value="JDC">JDC</option>
+                    <option value="AR">AR</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mt-3 d-flex gap-2">
+                <button type="submit" class="btn btn-success">{{ isEditMode ? 'Update' : 'Save' }}</button>
+                <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

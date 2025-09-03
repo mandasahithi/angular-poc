@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -84,15 +84,84 @@ export class UsersComponent implements OnInit {
       location: 'Bagumbayan',
       status: 'Active',
       role: 'AR'
+    },
+    {
+      id: '7',
+      name: 'kertilin Banks',
+      email: 'bnb@email.com',
+      phone: '09023456787',
+      location: 'gumbayan',
+      status: 'Inactive',
+      role: 'AR'
     }
   ];
 
   filteredUsers: User[] = [];
+  // editing state
+  editingUserId: string | null = null;
+  editedUser: Partial<User> = {};
+  // modal form state
+  showForm: boolean = false;
+  isEditMode: boolean = false;
+  // filter state
+  selectedStatus: string = '';
+  selectedRole: string = '';
+  // filter popover UI state
+  showFilterPopover: boolean = false;
+  // temporary staging selection inside popover (so Cancel can revert)
+  tempSelectedStatus: string = '';
 
   constructor() { }
 
   ngOnInit(): void {
-    this.filteredUsers = [...this.users];
+  this.filteredUsers = [...this.users];
+  }
+
+  /**
+   * Toggle the filter popover. When opened, stage current selections to temp state.
+   */
+  toggleFilterPopover(event?: MouseEvent): void {
+    if (event) { event.stopPropagation(); }
+    this.showFilterPopover = !this.showFilterPopover;
+    if (this.showFilterPopover) {
+      this.tempSelectedStatus = this.selectedStatus;
+    }
+  }
+
+  // close popover when clicking outside
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.showFilterPopover) { return; }
+    // clicking inside popover or on the filter button stops propagation; so any document click here is outside
+    this.showFilterPopover = false;
+    // discard staged changes
+    this.tempSelectedStatus = this.selectedStatus;
+  }
+
+  /**
+   * Apply the staged filter selection and close the popover
+   */
+  applyFilterFromPopover(): void {
+    this.selectedStatus = this.tempSelectedStatus;
+    this.showFilterPopover = false;
+    this.applyFilters();
+  }
+
+  /**
+   * Cancel the popover and discard staged changes
+   */
+  cancelFilter(): void {
+    this.tempSelectedStatus = this.selectedStatus;
+    this.showFilterPopover = false;
+  }
+
+  /**
+   * Clear filter selections (both staged and applied) and update list
+   */
+  clearFilterSelections(): void {
+    this.tempSelectedStatus = '';
+    this.selectedStatus = '';
+    this.applyFilters();
   }
 
   /**
@@ -109,44 +178,44 @@ export class UsersComponent implements OnInit {
    * Handle search functionality
    */
   onSearch(): void {
-    if (!this.searchTerm.trim()) {
-      this.filteredUsers = [...this.users];
-      return;
-    }
-
-    const searchLower = this.searchTerm.toLowerCase();
-    this.filteredUsers = this.users.filter(user =>
-      user.name.toLowerCase().includes(searchLower) ||
-      user.email.toLowerCase().includes(searchLower) ||
-      user.location.toLowerCase().includes(searchLower) ||
-      user.phone.includes(searchLower)
-    );
+  this.applyFilters();
   }
 
   /**
    * Set active tab
    */
   setActiveTab(tab: string): void {
-    this.activeTab = tab;
-    // Here you can implement different filtering based on tab selection
-    // For now, we'll just update the active tab
+  this.activeTab = tab;
+  this.applyFilters();
   }
 
   /**
    * Edit user functionality
    */
   editUser(user: User): void {
-    console.log('Editing user:', user);
-    // Implement edit user logic here
-    // This could open a modal or navigate to an edit page
+  // Open dialog in edit mode
+  this.editingUserId = user.id;
+  this.isEditMode = true;
+  this.showForm = true;
+  this.editedUser = { ...user };
   }
 
   /**
    * Add new user functionality
    */
   addUser(): void {
-    console.log('Adding new user');
-    // Implement add user logic here
+    // Open dialog in create mode
+    this.isEditMode = false;
+    this.showForm = true;
+    this.editingUserId = null;
+    this.editedUser = {
+      name: '',
+      email: '',
+      phone: '',
+      location: '',
+      status: 'Active',
+      role: 'MS'
+    };
   }
 
   /**
@@ -154,5 +223,112 @@ export class UsersComponent implements OnInit {
    */
   getStatusClass(status: string): string {
     return status === 'Active' ? 'status-active' : 'status-inactive';
+  }
+
+  /**
+   * Save changes made during inline edit
+   */
+  saveEditedUser(): void {
+    if (this.isEditMode && this.editingUserId) {
+      const idx = this.users.findIndex(u => u.id === this.editingUserId);
+      if (idx !== -1) {
+        this.users[idx] = { ...this.users[idx], ...(this.editedUser as User) };
+      }
+    } else {
+      // create new user
+      const maxId = this.users.reduce((m, u) => Math.max(m, Number(u.id)), 0);
+      const nextId = (maxId + 1).toString();
+      const newUser: User = {
+        id: nextId,
+        name: (this.editedUser.name || 'New User') as string,
+        email: (this.editedUser.email || '') as string,
+        phone: (this.editedUser.phone || '') as string,
+        location: (this.editedUser.location || '') as string,
+        status: (this.editedUser.status || 'Active') as 'Active' | 'Inactive',
+        role: (this.editedUser.role || 'MS') as 'MS' | 'JDC' | 'AR'
+      };
+      this.users.unshift(newUser);
+    }
+
+    // reset modal state
+    this.showForm = false;
+    this.isEditMode = false;
+    this.editingUserId = null;
+    this.editedUser = {};
+    this.applyFilters();
+  }
+
+  /**
+   * Cancel inline edit
+   */
+  cancelEdit(): void {
+  // close dialog or cancel inline edit
+  this.showForm = false;
+  this.isEditMode = false;
+  this.editingUserId = null;
+  this.editedUser = {};
+  }
+
+  /**
+   * Clear all filters and search
+   */
+  clearFilters(): void {
+    this.selectedStatus = '';
+    this.selectedRole = '';
+    this.searchTerm = '';
+    this.applyFilters();
+  }
+
+  /**
+   * Delete a user by id
+   */
+  deleteUser(id: string): void {
+    this.users = this.users.filter(u => u.id !== id);
+    this.applyFilters();
+  }
+
+  /**
+   * Apply tab + search filters and update filteredUsers
+   */
+  private applyFilters(): void {
+    let list = [...this.users];
+
+    // Tab filtering: map tabs to roles or special cases
+    switch (this.activeTab) {
+      case 'verifier':
+        list = list.filter(u => u.role === 'JDC');
+        break;
+      case 'coordinators':
+        list = list.filter(u => u.role === 'MS');
+        break;
+      case 'admins':
+        list = list.filter(u => u.role === 'AR');
+        break;
+      case 'citizens':
+      default:
+        // citizens = all users
+        break;
+    }
+
+    const search = this.searchTerm.trim().toLowerCase();
+    if (search) {
+      list = list.filter(user =>
+        user.name.toLowerCase().includes(search) ||
+        user.email.toLowerCase().includes(search) ||
+        user.location.toLowerCase().includes(search) ||
+        user.phone.includes(search)
+      );
+    }
+
+    // apply explicit status/role filters
+    if (this.selectedRole) {
+      list = list.filter(u => u.role === this.selectedRole);
+    }
+
+    if (this.selectedStatus) {
+      list = list.filter(u => u.status === this.selectedStatus);
+    }
+
+    this.filteredUsers = list;
   }
 }
