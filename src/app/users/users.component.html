@@ -1,57 +1,3 @@
-<div class="dashboard-container">
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="sidebar-header">
-      <h4 class="brand-title">Navotas</h4>
-      <p class="brand-subtitle">nav mobile app</p>
-    </div>
-
-    <ul class="sidebar-nav">
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-tachometer-alt"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-file-alt"></i>
-          <span>Content</span>
-        </a>
-      </li>
-      <li class="nav-item active">
-        <a href="#" class="nav-link">
-          <i class="fas fa-users"></i>
-          <span>Users</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-bell"></i>
-          <span>Notification</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-robot"></i>
-          <span>ChatBot</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-chart-bar"></i>
-          <span>Analytics</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-cog"></i>
-          <span>Settings</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-
   <!-- Main Content -->
   <main class="main-content">
     <!-- Header Stats -->
@@ -210,32 +156,40 @@
         <div class="card dialog">
           <div class="card-body">
             <h5 class="card-title">{{ isEditMode ? 'Edit User' : 'Add User' }}</h5>
-            <form (ngSubmit)="saveEditedUser()">
+            <form #userForm="ngForm" novalidate (ngSubmit)="saveEditedUser(userForm)">
               <div class="row g-2">
                 <div class="col-12 col-md-6">
-                  <input class="form-control" [(ngModel)]="editedUser.name" name="name" placeholder="Full name" required />
+                  <input class="form-control" [(ngModel)]="editedUser.name" name="name" placeholder="Full name" required #name="ngModel" />
+                  <div class="error-text" *ngIf="submitted && name.invalid">This field is required</div>
                 </div>
                 <div class="col-12 col-md-6">
-                  <input class="form-control" [(ngModel)]="editedUser.email" name="email" placeholder="Email" />
+                  <input class="form-control" [(ngModel)]="editedUser.email" name="email" placeholder="Email" required #email="ngModel" />
+                  <div class="error-text" *ngIf="submitted && email.invalid">This field is required</div>
                 </div>
                 <div class="col-12 col-md-6">
-                  <input class="form-control" [(ngModel)]="editedUser.phone" name="phone" placeholder="Phone" />
+                  <input class="form-control" [(ngModel)]="editedUser.phone" name="phone" placeholder="Phone" required #phone="ngModel" type="number"  pattern="^\d{10}$"
+                  minlength="10"
+                  maxlength="10" />
+                  <div class="error-text" *ngIf="submitted && phone.invalid"> Please enter a valid 10-digit phone number.</div>
                 </div>
                 <div class="col-12 col-md-6">
-                  <input class="form-control" [(ngModel)]="editedUser.location" name="location" placeholder="Location" />
+                  <input class="form-control" [(ngModel)]="editedUser.location" name="location" placeholder="Location" required #location="ngModel" />
+                  <div class="error-text" *ngIf="submitted && location.invalid">This field is required</div>
                 </div>
                 <div class="col-6 col-md-3">
-                  <select class="form-control" [(ngModel)]="editedUser.status" name="status">
+                  <select class="form-control" [(ngModel)]="editedUser.status" name="status" required #status="ngModel">
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
+                  <div class="error-text" *ngIf="submitted && status.invalid">This field is required</div>
                 </div>
                 <div class="col-6 col-md-3">
-                  <select class="form-control" [(ngModel)]="editedUser.role" name="role">
+                  <select class="form-control" [(ngModel)]="editedUser.role" name="role" required #role="ngModel">
                     <option value="MS">MS</option>
                     <option value="JDC">JDC</option>
                     <option value="AR">AR</option>
                   </select>
+                  <div class="error-text" *ngIf="submitted && role.invalid">This field is required</div>
                 </div>
               </div>
               <div class="mt-3 d-flex gap-2">
@@ -248,4 +202,3 @@
       </div>
     </div>
   </main>
-</div>

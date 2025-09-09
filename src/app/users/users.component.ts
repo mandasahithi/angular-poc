@@ -1,6 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 export interface User {
   id: string;
@@ -15,13 +18,14 @@ export interface User {
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
+
   // Stats data
-  totalCitizens: number = 12847;
+  get totalCitizens(): number { return this.users.length; }
   activeCoordinators: number = 24;
   adminUsers: number = 8;
 
@@ -103,6 +107,8 @@ export class UsersComponent implements OnInit {
   // modal form state
   showForm: boolean = false;
   isEditMode: boolean = false;
+  // form submit state
+  submitted: boolean = false;
   // filter state
   selectedStatus: string = '';
   selectedRole: string = '';
@@ -228,7 +234,11 @@ export class UsersComponent implements OnInit {
   /**
    * Save changes made during inline edit
    */
-  saveEditedUser(): void {
+  saveEditedUser(form?: NgForm): void {
+    this.submitted = true;
+    if (form && form.invalid) {
+      return;
+    }
     if (this.isEditMode && this.editingUserId) {
       const idx = this.users.findIndex(u => u.id === this.editingUserId);
       if (idx !== -1) {
@@ -255,6 +265,7 @@ export class UsersComponent implements OnInit {
     this.isEditMode = false;
     this.editingUserId = null;
     this.editedUser = {};
+    this.submitted = false;
     this.applyFilters();
   }
 
