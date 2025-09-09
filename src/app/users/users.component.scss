@@ -1,3 +1,9 @@
+.subtitle {
+  font-size: 0.9rem;
+  color: balck;
+  margin-bottom: 2px;
+}
+
 .dashboard-container {
   display: flex;
   min-height: 100vh;
@@ -13,9 +19,9 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
 
 
 // Sidebar Styles
-  .sidebar {
+.sidebar {
   width: 250px;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 
@@ -78,7 +84,7 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
 }
 
 // Main Content Styles
-  .main-content {
+.main-content {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
@@ -131,12 +137,12 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   .search-input {
     padding-left: 2.5rem;
     border-radius: 10px;
-    border: 1px solid rgba(200,210,220,0.8);
-    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(200, 210, 220, 0.8);
+    background: rgba(255, 255, 255, 0.9);
 
     &:focus {
       border-color: rgba($accent-1, 0.9);
-      box-shadow: 0 8px 20px rgba(124,159,255,0.06);
+      box-shadow: 0 8px 20px rgba(124, 159, 255, 0.06);
       outline: none;
     }
   }
@@ -169,17 +175,17 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   width: 220px;
   background: linear-gradient(180deg, #ffffff, #fbfdff);
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(33,47,60,0.12);
+  box-shadow: 0 10px 30px rgba(33, 47, 60, 0.12);
   padding: 0.5rem;
   z-index: 2500;
-  border: 1px solid rgba(0,0,0,0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 
   .popover-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.25rem 0.5rem;
-    border-bottom: 1px solid rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     margin-bottom: 0.5rem;
 
     .clear-link {
@@ -202,7 +208,9 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
       border-radius: 6px;
       cursor: pointer;
 
-      &:hover { background: #f6f8ff; }
+      &:hover {
+        background: #f6f8ff;
+      }
 
       .checkmark {
         color: #2c3e50;
@@ -268,7 +276,7 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(124,159,255,0.12);
+    box-shadow: 0 10px 30px rgba(124, 159, 255, 0.12);
   }
 }
 
@@ -294,7 +302,7 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   align-items: center;
   justify-content: center;
   padding: 1.25rem;
-  background: linear-gradient(180deg, rgba(242,246,255,0.75), rgba(255,248,255,0.6));
+  background: linear-gradient(180deg, rgba(242, 246, 255, 0.75), rgba(255, 248, 255, 0.6));
   backdrop-filter: blur(6px) saturate(120%);
   z-index: 2000;
 }
@@ -305,10 +313,10 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   border-radius: 12px;
   padding: 0;
   box-shadow: 0 18px 50px rgba(43, 62, 80, 0.12);
-  border: 1px solid rgba(255,255,255,0.6);
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,255,0.95));
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 255, 0.95));
   transform: translateY(-6px);
-  transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms;
+  transition: transform 220ms cubic-bezier(.2, .9, .3, 1), box-shadow 220ms;
 }
 
 .card.dialog .card-body {
@@ -320,7 +328,7 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   align-items: center;
   margin-bottom: 1rem;
 
-    .user-avatar {
+  .user-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -400,21 +408,23 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   font-weight: 600;
   color: #fff;
 
-  &:hover { transform: translateY(-1px); }
+  &:hover {
+    transform: translateY(-1px);
+  }
 }
 
 /* Inline edit area styling */
 .edit-area {
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,255,0.9));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(250, 250, 255, 0.9));
   border-radius: 10px;
   padding: 0.75rem;
-  border: 1px solid rgba(200,210,230,0.6);
+  border: 1px solid rgba(200, 210, 230, 0.6);
 }
 
 /* Form controls inside cards */
 .edit-area .form-control {
   border-radius: 8px;
-  border: 1px solid rgba(200,210,220,0.9);
+  border: 1px solid rgba(200, 210, 220, 0.9);
   padding: 0.45rem 0.6rem;
 }
 
@@ -425,16 +435,17 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   border: none;
 }
 
-.btn-danger, .btn-outline-danger {
-  background: rgba(255,120,120,0.08);
+.btn-danger,
+.btn-outline-danger {
+  background: rgba(255, 120, 120, 0.08);
   color: #b82a2a;
-  border: 1px solid rgba(184,42,42,0.12);
+  border: 1px solid rgba(184, 42, 42, 0.12);
 }
 
 .btn-secondary {
   background: #f1f3f5;
   color: #495057;
-  border: 1px solid rgba(0,0,0,0.04);
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 /* Error text under fields */
@@ -460,6 +471,7 @@ $card-bg: linear-gradient(180deg, #ffffff, #fbfeff);
   }
 
   .stats-card {
+    // margin-top: 2rem;
     margin-bottom: 1rem;
   }
 
